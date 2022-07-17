@@ -23,17 +23,19 @@
 void
 reloc_static_pie (ElfW(Addr) load_addr)
 {
-    /* Read our own dynamic section and fill in the info array.  */
-    ElfW(Dyn) * dyn_addr = ((void *) load_addr + elf_machine_dynamic ());
+    ElfW(Word) relative_count = 0;
+    ElfW(Addr) rel_addr = NULL;
+    ElfW(Dyn) * dyn_addr = NULL;
+    unsigned long dynamic_info[DYNAMIC_SIZE] = {0};   
 
-    unsigned long dynamic_info[36] = {0};    
+    /* Read our own dynamic section and fill in the info array.  */
+    dyn_addr = ((void *) load_addr + elf_machine_dynamic ());
 
     /* Use the underlying function to avoid TLS access before initialization */
     __dl_parse_dynamic_info(dyn_addr, dynamic_info, NULL, load_addr);
 
-    ElfW(Word) relative_count = dynamic_info[DT_RELCONT_IDX];
-    ElfW(Addr) rel_addr = dynamic_info[DT_RELOC_TABLE_ADDR];
+    /* Perform relocations */
+    relative_count = dynamic_info[DT_RELCONT_IDX];
+    rel_addr = dynamic_info[DT_RELOC_TABLE_ADDR];
     elf_machine_relative(load_addr, rel_addr, relative_count);
-
-    return;
 }
