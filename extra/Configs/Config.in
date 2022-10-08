@@ -326,7 +326,7 @@ config STATIC_PIE
 	default n
 	depends on DOPIC && !UCLIBC_FORMAT_FDPIC_ELF && \
 		(TARGET_arm || TARGET_i386 || TARGET_x86_64 || TARGET_aarch64 || \
-		 TARGET_mips || TARGET_xtensa)
+		 TARGET_mips || TARGET_xtensa || TARGET_powerpc)
 
 config ARCH_HAS_NO_SHARED
 	bool
@@ -1784,7 +1784,7 @@ config UCLIBC_HAS_STDIO_AUTO_RW_TRANSITION
 	  fflush function or to a file positioning function (fseek, fsetpos,
 	  or rewind), and input shall not be directly followed by output without
 	  an intervening call to a file positioning function, unless the input
-	  operation encounters end­of­file.
+	  operation encounters endï¿½ofï¿½file.
 
 	  Most people will answer Y.
 
